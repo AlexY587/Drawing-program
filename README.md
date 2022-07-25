@@ -1,7 +1,10 @@
 # Drawing-program
 Final Project
 To Do List
-- [ ] Line drawing tool
+- [x] Line drawing tool
 - [ ] Circle stamping tool
-- [ ] Add boilerplate
+- [x] Add boilerplate
 - [ ] Eraser tool
+- [ ] Music Player
+- [ ] Color Selector
+- [ ] Size Selector
