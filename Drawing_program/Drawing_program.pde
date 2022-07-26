@@ -13,10 +13,10 @@ float colorchangeBlackX, colorchangeBlackY, colorchangeBlackWidth, colorchangeBl
 float colorSelectorX, colorSelectorY, colorSelectorWidth, colorSelectorHeight;
 float palletX, palletY, palletWidth, palletHeight;
 float drawingsurfaceX, drawingsurfaceY, drawingsurfaceWidth, drawingsurfaceHeight, drawingDiamater;
-float colorSelectortitleX, colorSelectortitleY, colorSelectortitleWidth, colorSelectortitleHeight;
+float menuX, menuY, menuWidth, menuHeight;
 int colorSelectortitleSize;
 String colorSelectortitle = "Color Selector";
-Boolean draw=false;
+Boolean draw=false, colorSelecting=false;
 PFont titlefont;
 color Variable, red=#FF0303, blue=#0503FF, reset=#FFFFFF, green=#36FF00, black=#000000;
 color redTint=#A50000, blueTint=#0011A5, greenTint=#00A52D, blackTint=#5D5D5D;
@@ -52,6 +52,10 @@ void setup() {
   drawingsurfaceY = appheight*0;
   drawingsurfaceWidth = appwidth*3/4;
   drawingsurfaceHeight = appheight*4/5;
+  menuX = ;
+  menuY = ;
+  menuWidth = ;
+  menuHeight = ;
   drawingDiamater = appwidth*1/100;
   colorchangeRedX = appwidth/5;
   colorchangeRedY = appheight*1/18;
@@ -77,10 +81,6 @@ void setup() {
   palletY = appheight*1/20;
   palletWidth = appwidth/6.5;
   palletHeight = appheight/18;
-  colorSelectortitleX = colorSelectorX;
-  colorSelectortitleY = colorSelectorY;
-  colorSelectortitleWidth = colorSelectorWidth;
-  colorSelectortitleHeight = colorSelectorHeight;
   titlefont = createFont("Times New Roman", 60);
   //
   rect(drawingsurfaceX, drawingsurfaceY, drawingsurfaceWidth, drawingsurfaceHeight);
@@ -119,13 +119,15 @@ void draw() {
   } else {
     blackTint = black;
   }//end hoverover
-  fill(blue);
+  fill(reset);
+  rect(colorSelectorX, colorSelectorY, colorSelectorWidth, colorSelectorHeight);
+  fill(black);
   textAlign(CENTER ,CENTER );
   colorSelectortitleSize = 15;
   textFont(titlefont, colorSelectortitleSize);
-  text(colorSelectortitle, colorSelectortitleX, colorSelectortitleY, colorSelectortitleWidth, colorSelectortitleHeight);
+  text(colorSelectortitle, colorSelectorX, colorSelectorY, colorSelectorWidth, colorSelectorHeight);
   fill(reset);
-  rect(colorSelectorX, colorSelectorY, colorSelectorWidth, colorSelectorHeight);
+  if (colorSelecting == true) {
   rect(palletX, palletY, palletWidth, palletHeight);
   fill(redTint);
   rect(colorchangeRedX, colorchangeRedY, colorchangeRedWidth, colorchangeRedHeight);
@@ -136,6 +138,7 @@ void draw() {
   fill(blackTint);
   rect(colorchangeBlackX, colorchangeBlackY, colorchangeBlackWidth, colorchangeBlackHeight);
   fill(reset);
+  }
 }//end draw
 //
 void keyPressed() {
