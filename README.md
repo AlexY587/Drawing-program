@@ -6,5 +6,5 @@ To Do List
 - [x] Add boilerplate
 - [ ] Eraser tool
 - [ ] Music Player
-- [ ] Color Selector
+- [X] Color Selector
 - [ ] Size Selector
