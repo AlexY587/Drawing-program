@@ -6,6 +6,11 @@ import ddf.minim.spi.*;
 import ddf.minim.ugens.*;
 
 //Global variables
+//Radio
+Minim minim;
+AudioPlayer song1;
+AudioMetaData songMetaData1;
+//
 //color changer
 float colorchangeRedX, colorchangeRedY, colorchangeRedWidth, colorchangeRedHeight;
 float colorchangeBlueX, colorchangeBlueY, colorchangeBlueWidth, colorchangeBlueHeight;
@@ -18,16 +23,18 @@ float drawingsurfaceX, drawingsurfaceY, drawingsurfaceWidth, drawingsurfaceHeigh
 //shape selector
 float shapeSelectorX, shapeSelectorY, shapeSelectorWidth, shapeSelectorHeight;
 float circleStampX, circleStampY, circleStampWidth, circleStampHeight;
+float circleButtonX, circleButtonY, circleButtonWidth, circleButtonHeight;
 float squareStampX, squareStampY, squareStampWidth, squareStampHeight;
 float circleDrawX, circleDrawY, circleDrawWidth, circleDrawHeight;
 float defaultX, defaultY, defaultWidth, defaultHeight;
 float shapePalletX, shapePalletY, shapePalletWidth, shapePalletHeight;
+Boolean drawCircle=false, drawLine=true, drawSquare=false;
 //menu
 float menuX, menuY, menuWidth, menuHeight;
 //misc
 int colorSelectortitleSize;
 String colorSelectortitle = "Color Selector";
-Boolean draw=false, colorSelecting=false;
+Boolean draw=false, colorSelecting=false, shapeSelecting=false;
 PFont titlefont;
 color Variable, red=#FF0303, blue=#0503FF, reset=#FFFFFF, green=#36FF00, black=#000000, grey=#AFAFAF;
 color redTint=#A50000, blueTint=#0011A5, greenTint=#00A52D, blackTint=#5D5D5D, selectorTint=#FFFFFF, shapeSelectorTint=#FFFFFF, squareTint=#FFFFFF, circleTint=#FFFFFF, lineTint=#FFFFFF;
@@ -112,6 +119,10 @@ void setup() {
   defaultY = squareStampY;
   defaultWidth = squareStampWidth;
   defaultHeight = squareStampHeight;
+  circleButtonX = colorchangeGreenX;
+  circleButtonY = squareStampY;
+  circleButtonWidth = squareStampWidth;
+  circleButtonHeight = squareStampHeight;
   titlefont = createFont("Times New Roman", 60);
   //
   rect(drawingsurfaceX, drawingsurfaceY, drawingsurfaceWidth, drawingsurfaceHeight);
@@ -125,8 +136,18 @@ void draw() {
   if (draw == true && (mouseX>drawingsurfaceX && mouseX<drawingsurfaceX + drawingsurfaceWidth && mouseY>drawingsurfaceY && mouseY<drawingsurfaceY + drawingsurfaceHeight)) {
     stroke(Variable);
     fill(Variable);
-    line(mouseX, mouseY, pmouseX, pmouseY); //line draw
-    //line(mouseX, mouseY, 0, 0); //cooler line draw
+    if (drawLine == true) {
+      line(mouseX, mouseY, pmouseX, pmouseY); //line draw
+    } else {
+      if (drawSquare == true) {
+        rect(mouseX, mouseY, 10, 10);
+      } else {
+        if (drawCircle == true) {
+          ellipse(mouseX, mouseY, 10, 10);
+        }
+      }
+    }
+    //line(mouseX, mouseY, 0, 0); //cooler line draw put in Cool stuff later
     fill(reset);
     stroke(black);
   }
@@ -169,10 +190,15 @@ void draw() {
   } else {
     squareTint = reset;
   }//end hoverover
-  if (mouseX>squareStampX && mouseX<squareStampX+squareStampWidth && mouseY>squareStampY && mouseY<squareStampY+squareStampHeight) {
-    squareTint = grey;
+  if (mouseX>circleButtonX && mouseX<circleButtonX+circleButtonWidth && mouseY>circleButtonY && mouseY<circleButtonY+circleButtonHeight) {
+    circleTint = grey;
   } else {
-    squareTint = reset;
+    circleTint = reset;
+  }//end hoverover
+  if (mouseX>defaultX && mouseX<defaultX+defaultWidth && mouseY>defaultY && mouseY<defaultY+defaultHeight) {
+    lineTint = grey;
+  } else {
+    lineTint = reset;
   }//end hoverover
   fill(selectorTint);
   rect(colorSelectorX, colorSelectorY, colorSelectorWidth, colorSelectorHeight);
@@ -201,17 +227,20 @@ void draw() {
   textFont(titlefont, 15);
   text("Shape Selector",shapeSelectorX, shapeSelectorY, shapeSelectorWidth, shapeSelectorHeight);
   fill(reset);
-  rect(shapePalletX, shapePalletY, shapePalletWidth, shapePalletHeight);
-  fill(squareTint);
-  rect(squareStampX, squareStampY, squareStampWidth, squareStampHeight);
-  fill(circleTint);
-  ellipse(circleStampX, circleStampY, circleStampWidth, circleStampHeight);
-  rect(defaultX, defaultY, defaultWidth, defaultHeight);
-  fill(black);
-  textAlign(CENTER, CENTER );
-  textFont(titlefont, 15);
-  text("Line",defaultX, defaultY, defaultWidth, defaultHeight);
-  fill(reset);
+  if(shapeSelecting == true){
+    rect(shapePalletX, shapePalletY, shapePalletWidth, shapePalletHeight);
+    fill(squareTint);
+    rect(squareStampX, squareStampY, squareStampWidth, squareStampHeight);
+    fill(circleTint);
+    ellipse(circleStampX, circleStampY, circleStampWidth, circleStampHeight);
+    fill(lineTint);
+    rect(defaultX, defaultY, defaultWidth, defaultHeight);
+    fill(black);
+    textAlign(CENTER, CENTER );
+    textFont(titlefont, 15);
+    text("Line",defaultX, defaultY, defaultWidth, defaultHeight);
+    fill(reset);
+  }
 }//end draw
 //
 void keyPressed() {
@@ -259,6 +288,42 @@ void mousePressed() {
       colorSelecting = true;
       } else {
       colorSelecting = false;
+      }
+    }
+  }
+  if (mouseX>shapeSelectorX && mouseX<shapeSelectorX+shapeSelectorWidth && mouseY>shapeSelectorY && mouseY<shapeSelectorY+shapeSelectorHeight) {
+    if ( mouseButton == LEFT) {
+      if (shapeSelecting == false) {
+      shapeSelecting = true;
+      } else {
+      shapeSelecting = false;
+      }
+    }
+  }
+   if (mouseX>squareStampX && mouseX<squareStampX+squareStampWidth && mouseY>squareStampY && mouseY<squareStampY+squareStampHeight) {
+    if ( mouseButton == LEFT) {
+      if (shapeSelecting == true){
+      drawSquare = true;
+      drawLine = false;
+      drawCircle = false;
+      }
+    }
+  }
+   if (mouseX>circleButtonX && mouseX<circleButtonX+circleButtonWidth && mouseY>circleButtonY && mouseY<circleButtonY+circleButtonHeight) {
+    if ( mouseButton == LEFT) {
+      if (shapeSelecting == true){
+      drawCircle = true;
+      drawSquare = false;
+      drawLine = false;
+      }
+    }
+  }
+   if (mouseX>defaultX && mouseX<defaultX+defaultWidth && mouseY>defaultY && mouseY<defaultY+defaultHeight) {
+    if ( mouseButton == LEFT) {
+      if (shapeSelecting == true){
+      drawLine = true;
+      drawCircle = false;
+      drawSquare = false;
       }
     }
   }
