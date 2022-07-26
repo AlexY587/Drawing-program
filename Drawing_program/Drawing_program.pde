@@ -30,7 +30,7 @@ String colorSelectortitle = "Color Selector";
 Boolean draw=false, colorSelecting=false;
 PFont titlefont;
 color Variable, red=#FF0303, blue=#0503FF, reset=#FFFFFF, green=#36FF00, black=#000000, grey=#AFAFAF;
-color redTint=#A50000, blueTint=#0011A5, greenTint=#00A52D, blackTint=#5D5D5D, selectorTint=#FFFFFF, shapeSelectorTint=#FFFFFF;
+color redTint=#A50000, blueTint=#0011A5, greenTint=#00A52D, blackTint=#5D5D5D, selectorTint=#FFFFFF, shapeSelectorTint=#FFFFFF, squareTint=#FFFFFF, circleTint=#FFFFFF, lineTint=#FFFFFF;
 //
 void setup() {
   //display checker
@@ -98,12 +98,20 @@ void setup() {
   shapeSelectorHeight = appheight/18;
   shapePalletX = palletX;
   shapePalletY = shapeSelectorY/1.1;
-  shapePalletWidth = palletWidth;
+  shapePalletWidth = palletWidth/1.2;
   shapePalletHeight = palletHeight*2;
   squareStampX = colorchangeBlackX;
   squareStampY = shapeSelectorY*1.05;
   squareStampWidth = colorchangeRedWidth;
   squareStampHeight = colorchangeRedHeight;
+  circleStampX = colorchangeGreenX*1.1;
+  circleStampY = squareStampY*1.1;
+  circleStampWidth = squareStampWidth;
+  circleStampHeight = squareStampHeight;
+  defaultX = colorchangeBlueX;
+  defaultY = squareStampY;
+  defaultWidth = squareStampWidth;
+  defaultHeight = squareStampHeight;
   titlefont = createFont("Times New Roman", 60);
   //
   rect(drawingsurfaceX, drawingsurfaceY, drawingsurfaceWidth, drawingsurfaceHeight);
@@ -156,6 +164,16 @@ void draw() {
   } else {
     shapeSelectorTint = reset;
   }//end hoverover
+  if (mouseX>squareStampX && mouseX<squareStampX+squareStampWidth && mouseY>squareStampY && mouseY<squareStampY+squareStampHeight) {
+    squareTint = grey;
+  } else {
+    squareTint = reset;
+  }//end hoverover
+  if (mouseX>squareStampX && mouseX<squareStampX+squareStampWidth && mouseY>squareStampY && mouseY<squareStampY+squareStampHeight) {
+    squareTint = grey;
+  } else {
+    squareTint = reset;
+  }//end hoverover
   fill(selectorTint);
   rect(colorSelectorX, colorSelectorY, colorSelectorWidth, colorSelectorHeight);
   fill(black);
@@ -186,6 +204,13 @@ void draw() {
   rect(shapePalletX, shapePalletY, shapePalletWidth, shapePalletHeight);
   fill(squareTint);
   rect(squareStampX, squareStampY, squareStampWidth, squareStampHeight);
+  fill(circleTint);
+  ellipse(circleStampX, circleStampY, circleStampWidth, circleStampHeight);
+  rect(defaultX, defaultY, defaultWidth, defaultHeight);
+  fill(black);
+  textAlign(CENTER, CENTER );
+  textFont(titlefont, 15);
+  text("Line",defaultX, defaultY, defaultWidth, defaultHeight);
   fill(reset);
 }//end draw
 //
