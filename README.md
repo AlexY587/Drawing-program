@@ -5,6 +5,6 @@ To Do List
 - [X] Circle stamping tool
 - [x] Add boilerplate
 - [ ] Eraser tool
-- [ ] Music Player
+- [X] Music Player
 - [X] Color Selector
 - [X] Size Selector
