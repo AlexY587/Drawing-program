@@ -29,8 +29,10 @@ float nextX, nextY, nextWidth, nextHeight;
 float backX, backY, backWidth, backHeight;
 int songNumber=1;
 Boolean radioOn=false;
+float loopX, loopY, loopWidth, loopHeight;
+color invisible=color(100,100,100,0), Tint=color(80, 80, 80, 147.0), playTint, pauseTint, forwardTint, backwardTint, nextTint, backTint, loopTint;
 //
-//Size changer NOTE: Size changer does not work with line
+//Size changer
 float sizeChangeX, sizeChangeY, sizeChangeWidth, sizeChangeHeight;
 float sizeDisplayX, sizeDisplayY, sizeDisplayWidth, sizeDisplayHeight;
 float sizeUPXbridge, sizeUPYbridge, sizeUPXleft, sizeUPYleft, sizeUPXright, sizeUPYright;
@@ -61,14 +63,15 @@ Boolean drawCircle=false, drawLine=true, drawSquare=false;
 //menu
 float menuX, menuY, menuWidth, menuHeight;
 //misc
+float exitX, exitY, exitWidth, exitHeight;
 int colorSelectortitleSize;
 String colorSelectortitle = "Color Selector";
 Boolean draw=false, colorSelecting=false, shapeSelecting=false;
 PFont titlefont;
 color Variable, red=#FF0303, blue=#0503FF, reset=#FFFFFF, green=#36FF00, black=#000000, grey=#AFAFAF;
 color redTint=#A50000, blueTint=#0011A5, greenTint=#00A52D, blackTint=#5D5D5D, selectorTint=#FFFFFF, shapeSelectorTint=#FFFFFF, squareTint=#FFFFFF, circleTint=#FFFFFF, lineTint=#FFFFFF;
-color upTint, downTint;
-color radioTint, playTint, pauseTint;
+color upTint, downTint, exitTint, closeTint;
+color radioTint;
 //
 void setup() {
   //display checker
@@ -107,7 +110,7 @@ void setup() {
   songVarData = songMetaData1;
   //population
   drawingsurfaceX = appwidth/4;
-  drawingsurfaceY = appheight*0;
+  drawingsurfaceY = appheight/12;
   drawingsurfaceWidth = appwidth*3/4;
   drawingsurfaceHeight = appheight*4/5;
   menuX = appwidth/-2;
@@ -268,6 +271,14 @@ void setup() {
   backY = appheight/1.71;
   backWidth = appwidth/52;
   backHeight = appheight/31;
+  loopX = appwidth/10.86;
+  loopY = appheight/1.59;
+  loopWidth = appwidth/52;
+  loopHeight = appheight/31;
+  exitX = appwidth/1.323;
+  exitY = appheight*0;
+  exitWidth = appwidth/40;
+  exitHeight = appheight/24;
   titlefont = createFont("Times New Roman", 60);
   //
   rect(drawingsurfaceX, drawingsurfaceY, drawingsurfaceWidth, drawingsurfaceHeight);
@@ -276,7 +287,9 @@ void setup() {
 //
 void draw() {
   fill(grey);
+  noStroke();
   rect(menuX, menuY, menuWidth, menuHeight);
+  stroke(1);
   fill(reset);
   if (draw == true && (mouseX>drawingsurfaceX && mouseX<drawingsurfaceX + drawingsurfaceWidth && mouseY>drawingsurfaceY && mouseY<drawingsurfaceY + drawingsurfaceHeight)) {
     stroke(Variable);
@@ -363,14 +376,56 @@ void draw() {
     radioTint = reset;
   }//end hoverover
   if (mouseX>pauseX && mouseX<pauseX+pauseWidth && mouseY>pauseY && mouseY<pauseY+pauseHeight) {
-    pauseTint = grey;
+    pauseTint = Tint;
   } else {
-    pauseTint = reset;
+    pauseTint = invisible;
   }//end hoverover
   if (mouseX>playX && mouseX<playX+playWidth && mouseY>playY && mouseY<playY+playHeight) {
-    playTint = grey;
+    playTint = Tint;
   } else {
-    playTint = reset;
+    playTint = invisible;
+  }//end hoverover
+  if (mouseX>fastForwardX && mouseX<fastForwardX+fastForwardWidth && mouseY>fastForwardY && mouseY<fastForwardY+fastForwardHeight) {
+    forwardTint = Tint;
+  } else {
+    forwardTint = invisible;
+  }//end hoverover
+  if (mouseX>skipBackwardsX && mouseX<skipBackwardsX+skipBackwardsWidth && mouseY>skipBackwardsY && mouseY<skipBackwardsY+skipBackwardsHeight) {
+    backwardTint = Tint;
+  } else {
+    backwardTint = invisible;
+  }//end hoverover
+  if (mouseX>backX && mouseX<backX+backWidth && mouseY>backY && mouseY<backY+backHeight) {
+    backTint = Tint;
+  } else {
+    backTint = invisible;
+  }//end hoverover
+  if (mouseX>nextX && mouseX<nextX+nextWidth && mouseY>nextY && mouseY<nextY+nextHeight) {
+    nextTint = Tint;
+  } else {
+    nextTint = invisible;
+  }//end hoverover
+  if (mouseX>fastForwardX && mouseX<fastForwardX+fastForwardWidth && mouseY>fastForwardY && mouseY<fastForwardY+fastForwardHeight) {
+    forwardTint = Tint;
+  } else {
+    forwardTint = invisible;
+  }//end hoverover
+  if (mouseX>fastForwardX && mouseX<fastForwardX+fastForwardWidth && mouseY>fastForwardY && mouseY<fastForwardY+fastForwardHeight) {
+    forwardTint = Tint;
+  } else {
+    forwardTint = invisible;
+  }//end hoverover
+  if (mouseX>loopX && mouseX<loopX+loopWidth && mouseY>loopY && mouseY<loopY+loopHeight) {
+    loopTint = Tint;
+  } else {
+    loopTint = invisible;
+  }//end hoverover
+  if (mouseX>exitX && mouseX<exitX+exitWidth && mouseY>exitY && mouseY<exitY+exitHeight) {
+    exitTint = red;
+    closeTint = reset;
+  } else {
+    exitTint = reset;
+    closeTint = black;
   }//end hoverover
   fill(selectorTint);
   rect(colorSelectorX, colorSelectorY, colorSelectorWidth, colorSelectorHeight);
@@ -436,6 +491,7 @@ void draw() {
   textAlign(CENTER, CENTER );
   textFont(titlefont, 15);
   text("Radio",radioX, radioY, radioWidth, radioHeight);
+  if(radioOn == true){
   fill(reset);
   rect(radioMenuX, radioMenuY, radioMenuWidth, radioMenuHeight);
     //
@@ -452,6 +508,33 @@ void draw() {
   textAlign(CENTER, TOP);
   textFont(titlefont, 30);
   text("Now Playing:"+songVarData.title(),radioMenuX, radioMenuY, radioMenuWidth, radioMenuHeight);
+  fill(reset);
+  noStroke();
+  fill(playTint);
+  rect (playX, playY, playWidth, playHeight);
+  fill(pauseTint);
+  rect (pauseX, pauseY, pauseWidth, pauseHeight);
+  fill(forwardTint);
+  rect (fastForwardX, fastForwardY, fastForwardWidth, fastForwardHeight);
+  fill(backwardTint);
+  rect (skipBackwardsX, skipBackwardsY, skipBackwardsWidth, skipBackwardsHeight);
+  fill(nextTint);
+  rect (nextX, nextY, nextWidth, nextHeight);
+  fill(backTint);
+  rect (backX, backY, backWidth, backHeight);
+  fill(loopTint);
+  rect (loopX, loopY, loopWidth, loopHeight);
+  stroke(1);
+  fill(reset);
+  //
+  }
+  //
+  fill(exitTint);
+  rect(exitX, exitY, exitWidth, exitHeight);
+  fill(closeTint);
+  textAlign(CENTER, CENTER );
+  textFont(titlefont, 15);
+  text("X",exitX, exitY, exitWidth, exitHeight);
   fill(reset);
 }//end draw
 //
@@ -618,7 +701,7 @@ void mousePressed() {
         songNumber = 3;
         songVar = song3;
         songVarData = songMetaData3;
-        songVar.play();
+        songVar.loop(0);
       } else {
       if (songNumber == 2) {
         songVar.pause();
@@ -627,6 +710,7 @@ void mousePressed() {
         songVar = song1;
         songVarData = songMetaData1;
         songVar.play();
+        songVar.loop(0);
         } else {
           if (songNumber == 3) {
           songVar.pause();
@@ -635,6 +719,7 @@ void mousePressed() {
           songVar = song2;
           songVarData = songMetaData2;
           songVar.play();
+          songVar.loop(0);
           }
           }
         }
@@ -648,6 +733,16 @@ void mousePressed() {
       } else {
         radioOn = false;
       }
+    }
+  }
+  if (mouseX>loopX && mouseX<loopX+loopWidth && mouseY>loopY && mouseY<loopY+loopHeight) {
+    if ( mouseButton == LEFT) {
+      songVar.loop();
+    }
+  }
+  if (mouseX>exitX && mouseX<exitX+exitWidth && mouseY>exitY && mouseY<exitY+exitHeight) {
+    if ( mouseButton == LEFT) {
+      exit();
     }
   }
 //
