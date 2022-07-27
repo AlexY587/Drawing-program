@@ -8,3 +8,4 @@ To Do List
 - [X] Music Player
 - [X] Color Selector
 - [X] Size Selector
+- [ ] Add Audio for the buttons
