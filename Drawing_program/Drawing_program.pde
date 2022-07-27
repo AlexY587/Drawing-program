@@ -8,8 +8,20 @@ import ddf.minim.ugens.*;
 //Global variables
 //Radio
 Minim minim;
-AudioPlayer song1;
-AudioMetaData songMetaData1;
+AudioPlayer song1, song2, song3;
+AudioMetaData songMetaData1, songMetaData2, songMetaData3, song;
+float radioX, radioY, radioWidth, radioHeight;
+float radioMenuX, radioMenuY, radioMenuWidth, radioMenuHeight;
+//
+//Size changer NOTE: Size changer does not work with line
+float sizeChangeX, sizeChangeY, sizeChangeWidth, sizeChangeHeight;
+float sizeDisplayX, sizeDisplayY, sizeDisplayWidth, sizeDisplayHeight;
+float sizeUPXbridge, sizeUPYbridge, sizeUPXleft, sizeUPYleft, sizeUPXright, sizeUPYright;
+float sizeDOWNXbridge, sizeDOWNYbridge, sizeDOWNXleft, sizeDOWNYleft, sizeDOWNXright, sizeDOWNYright;
+float upButtonX, upButtonY, upButtonWidth, upButtonHeight;
+float downButtonX, downButtonY, downButtonWidth, downButtonHeight; 
+int drawSize = 10;
+String displaySize = String.valueOf(drawSize);
 //
 //color changer
 float colorchangeRedX, colorchangeRedY, colorchangeRedWidth, colorchangeRedHeight;
@@ -38,6 +50,7 @@ Boolean draw=false, colorSelecting=false, shapeSelecting=false;
 PFont titlefont;
 color Variable, red=#FF0303, blue=#0503FF, reset=#FFFFFF, green=#36FF00, black=#000000, grey=#AFAFAF;
 color redTint=#A50000, blueTint=#0011A5, greenTint=#00A52D, blackTint=#5D5D5D, selectorTint=#FFFFFF, shapeSelectorTint=#FFFFFF, squareTint=#FFFFFF, circleTint=#FFFFFF, lineTint=#FFFFFF;
+color upTint, downTint;
 //
 void setup() {
   //display checker
@@ -65,6 +78,13 @@ void setup() {
     println(instruct);
   }
   //
+/*  minim = new Minim(this);
+  song1 = minim.loadFile("Audio/Glass - Anno Domini Beats.mp3");
+  song2 = minim.loadFile("Audio/Coast - Anno Domini Beats.mp3");
+  song3 = minim.loadFile("Audio/Pray - Anno Domini Beats.mp3");
+  songMetaData1 = song1.getMetaData();
+  songMetaData2 = song2.getMetaData();
+  songMetaData3 = song3.getMetaData();*/
   //population
   drawingsurfaceX = appwidth/4;
   drawingsurfaceY = appheight*0;
@@ -123,6 +143,34 @@ void setup() {
   circleButtonY = squareStampY;
   circleButtonWidth = squareStampWidth;
   circleButtonHeight = squareStampHeight;
+  sizeChangeX = shapeSelectorX;
+  sizeChangeY = appheight/2.8;
+  sizeChangeWidth = appwidth/12;
+  sizeChangeHeight = appheight/11;
+  sizeDisplayX = sizeChangeX*1.5;
+  sizeDisplayY = sizeChangeY*1.06;
+  sizeDisplayWidth = appwidth/40;
+  sizeDisplayHeight = appheight/25;
+  sizeUPXbridge = appwidth/11.7;
+  sizeUPYbridge = appheight/2.65;
+  sizeUPXleft = appwidth/10;
+  sizeUPYleft = sizeDisplayY*1.05;
+  sizeUPXright = appwidth/14;
+  sizeUPYright = sizeDisplayY*1.05;
+  sizeDOWNXbridge = sizeUPXbridge;
+  sizeDOWNYbridge = appheight/2.35;
+  sizeDOWNXleft = sizeUPXleft;
+  sizeDOWNYleft = sizeDisplayY*1.07;
+  sizeDOWNXright = sizeUPXright;
+  sizeDOWNYright = sizeDisplayY*1.07;
+  upButtonX = sizeUPXbridge*0.83;
+  upButtonY = sizeUPYbridge*1;
+  upButtonWidth = sizeUPXright/2.4;
+  upButtonHeight = sizeUPYbridge/18;
+  downButtonX = sizeUPXright;
+  downButtonY = sizeDOWNYbridge/1.05;
+  downButtonWidth = sizeUPXright/2.4;
+  downButtonHeight = sizeUPYbridge/18; 
   titlefont = createFont("Times New Roman", 60);
   //
   rect(drawingsurfaceX, drawingsurfaceY, drawingsurfaceWidth, drawingsurfaceHeight);
@@ -140,10 +188,10 @@ void draw() {
       line(mouseX, mouseY, pmouseX, pmouseY); //line draw
     } else {
       if (drawSquare == true) {
-        rect(mouseX, mouseY, 10, 10);
+        rect(mouseX, mouseY, drawSize, drawSize);
       } else {
         if (drawCircle == true) {
-          ellipse(mouseX, mouseY, 10, 10);
+          ellipse(mouseX, mouseY, drawSize, drawSize);
         }
       }
     }
@@ -200,6 +248,16 @@ void draw() {
   } else {
     lineTint = reset;
   }//end hoverover
+  if (mouseX>upButtonX && mouseX<upButtonX+upButtonWidth && mouseY>upButtonY && mouseY<upButtonY+upButtonHeight) {
+    upTint = grey;
+  } else {
+    upTint = reset;
+  }//end hoverover
+  if (mouseX>downButtonX && mouseX<downButtonX+downButtonWidth && mouseY>downButtonY && mouseY<downButtonY+downButtonHeight) {
+    downTint = grey;
+  } else {
+    downTint = reset;
+  }//end hoverover
   fill(selectorTint);
   rect(colorSelectorX, colorSelectorY, colorSelectorWidth, colorSelectorHeight);
   fill(black);
@@ -241,6 +299,26 @@ void draw() {
     text("Line",defaultX, defaultY, defaultWidth, defaultHeight);
     fill(reset);
   }
+  rect(sizeChangeX, sizeChangeY, sizeChangeWidth, sizeChangeHeight);
+  fill(black);
+  textAlign(CENTER, TOP );
+  textFont(titlefont, 15);
+  text("Size Selector", sizeChangeX, sizeChangeY, sizeChangeWidth, sizeChangeHeight);
+  fill(reset);
+  rect(sizeDisplayX, sizeDisplayY, sizeDisplayWidth, sizeDisplayHeight);
+  fill(black);
+  textAlign(CENTER, CENTER );
+  textFont(titlefont, 15);
+  text(drawSize + "px", sizeDisplayX, sizeDisplayY, sizeDisplayWidth, sizeDisplayHeight);
+  fill(upTint);
+  triangle(sizeUPXbridge, sizeUPYbridge, sizeUPXleft, sizeUPYleft, sizeUPXright, sizeUPYright);
+  fill(downTint);
+  println(downButtonX, downButtonY, downButtonWidth, downButtonHeight);
+  triangle(sizeDOWNXbridge, sizeDOWNYbridge, sizeDOWNXleft, sizeDOWNYleft, sizeDOWNXright, sizeDOWNYright);
+  fill(reset);
+  //Music Player
+  
+  //
 }//end draw
 //
 void keyPressed() {
@@ -325,6 +403,16 @@ void mousePressed() {
       drawCircle = false;
       drawSquare = false;
       }
+    }
+  }
+   if (mouseX>upButtonX && mouseX<upButtonX+upButtonWidth && mouseY>upButtonY && mouseY<upButtonY+upButtonHeight) {
+    if ( mouseButton == LEFT) {
+      drawSize = drawSize + 1;
+    }
+  }
+   if (mouseX>downButtonX && mouseX<downButtonX+downButtonWidth && mouseY>downButtonY && mouseY<downButtonY+downButtonHeight) {
+    if ( mouseButton == LEFT) {
+      drawSize = drawSize - 1;
     }
   }
 }//end mousepressed
