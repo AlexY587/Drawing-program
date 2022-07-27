@@ -8,10 +8,27 @@ import ddf.minim.ugens.*;
 //Global variables
 //Radio
 Minim minim;
-AudioPlayer song1, song2, song3;
-AudioMetaData songMetaData1, songMetaData2, songMetaData3, song;
+AudioPlayer song1, song2, song3, songVar;
+AudioMetaData songMetaData1, songMetaData2, songMetaData3, songVarData;
 float radioX, radioY, radioWidth, radioHeight;
 float radioMenuX, radioMenuY, radioMenuWidth, radioMenuHeight;
+float imageX, imageY, imagewidth, imageheight, picWidthAdjusted, picHeightAdjusted;
+float imageX2, imageY2, imagewidth2, imageheight2, picWidthAdjusted2, picHeightAdjusted2;
+float imageLargerDimension, imageSmallerDimension;
+float imageLargerDimension2, imageSmallerDimension2;
+float imageWidthRatio, imageHeightRatio;
+float imageWidthRatio2, imageHeightRatio2;
+PImage pic, pic2;
+Boolean widthLarger = false, heightLarger = false;
+Boolean widthLarger2 = false, heightLarger2 = false;
+float playX, playY, playWidth, playHeight;
+float pauseX, pauseY, pauseWidth, pauseHeight;
+float fastForwardX, fastForwardY, fastForwardWidth, fastForwardHeight;
+float skipBackwardsX, skipBackwardsY, skipBackwardsWidth, skipBackwardsHeight;
+float nextX, nextY, nextWidth, nextHeight;
+float backX, backY, backWidth, backHeight;
+int songNumber=1;
+Boolean radioOn=false;
 //
 //Size changer NOTE: Size changer does not work with line
 float sizeChangeX, sizeChangeY, sizeChangeWidth, sizeChangeHeight;
@@ -51,6 +68,7 @@ PFont titlefont;
 color Variable, red=#FF0303, blue=#0503FF, reset=#FFFFFF, green=#36FF00, black=#000000, grey=#AFAFAF;
 color redTint=#A50000, blueTint=#0011A5, greenTint=#00A52D, blackTint=#5D5D5D, selectorTint=#FFFFFF, shapeSelectorTint=#FFFFFF, squareTint=#FFFFFF, circleTint=#FFFFFF, lineTint=#FFFFFF;
 color upTint, downTint;
+color radioTint, playTint, pauseTint;
 //
 void setup() {
   //display checker
@@ -78,13 +96,15 @@ void setup() {
     println(instruct);
   }
   //
-/*  minim = new Minim(this);
+  minim = new Minim(this);
   song1 = minim.loadFile("Audio/Glass - Anno Domini Beats.mp3");
   song2 = minim.loadFile("Audio/Coast - Anno Domini Beats.mp3");
   song3 = minim.loadFile("Audio/Pray - Anno Domini Beats.mp3");
   songMetaData1 = song1.getMetaData();
   songMetaData2 = song2.getMetaData();
-  songMetaData3 = song3.getMetaData();*/
+  songMetaData3 = song3.getMetaData(); 
+  songVar = song1;
+  songVarData = songMetaData1;
   //population
   drawingsurfaceX = appwidth/4;
   drawingsurfaceY = appheight*0;
@@ -175,6 +195,79 @@ void setup() {
   radioY = appheight/1.8;
   radioWidth = appwidth/24;
   radioHeight = appheight/18;
+  radioMenuX = appwidth/12;
+  radioMenuY = appheight/1.95;
+  radioMenuWidth = appwidth/6.5;
+  radioMenuHeight = appheight/6;
+  pic = loadImage("musicControls.png");//Dimensions : width 511.333px, height 767
+  pic2 = loadImage("repeat.png");//dimensions : width 525, height 393
+  int picWidth = 960;
+  int picHeight = 480;
+  int picWidth2 = 1200;
+  int picHeight2 = 630;
+  if (picWidth >= picHeight) {
+  imageLargerDimension = picWidth;
+  imageSmallerDimension = picHeight;
+  widthLarger = true;
+  } else {
+  imageLargerDimension = picHeight;
+  imageSmallerDimension = picWidth;
+  heightLarger = true;
+   }
+   if (picWidth2 >= picHeight2) {
+  imageLargerDimension2 = picWidth2;
+  imageSmallerDimension2 = picHeight2;
+  widthLarger2 = true;
+  } else {
+  imageLargerDimension2 = picHeight2;
+  imageSmallerDimension2 = picWidth2;
+  heightLarger2 = true;
+   }
+  if (widthLarger == true) imageWidthRatio = imageLargerDimension / imageLargerDimension;
+  if (widthLarger == true) imageHeightRatio = imageSmallerDimension / imageLargerDimension;
+  if (heightLarger == true) imageWidthRatio = imageSmallerDimension / imageLargerDimension;
+  if (heightLarger == true) imageHeightRatio = imageLargerDimension / imageLargerDimension;
+  //2
+  if (widthLarger2 == true) imageWidthRatio2 = imageLargerDimension2 / imageLargerDimension2;
+  if (widthLarger2 == true) imageHeightRatio2 = imageSmallerDimension2 / imageLargerDimension2;
+  if (heightLarger2 == true) imageWidthRatio2 = imageSmallerDimension2 / imageLargerDimension2;
+  if (heightLarger2 == true) imageHeightRatio2 = imageLargerDimension2 / imageLargerDimension2;
+  imageX = appwidth/11;
+  imageY = appheight/1.85;
+  imagewidth = appwidth/15;
+  imageheight = appheight/2;
+  imageX2 = appwidth/11;
+  imageY2 = appheight/1.6;
+  imagewidth2 = appwidth/42;
+  imageheight2 = appheight/10;
+  picWidthAdjusted = imagewidth * imageWidthRatio;
+  picHeightAdjusted = imageheight * imageHeightRatio;
+  picWidthAdjusted2 = imagewidth2 * imageWidthRatio2;
+  picHeightAdjusted2 = imageheight2 * imageHeightRatio2;
+  playX = appwidth/7;
+  playY = appheight/1.71;
+  playWidth = appwidth/52;
+  playHeight = appheight/31;
+  pauseX = appwidth/6.15;
+  pauseY = appheight/1.71;
+  pauseWidth = appwidth/51;
+  pauseHeight = appheight/31 ;
+  fastForwardX = appwidth/5.46;
+  fastForwardY = appheight/1.71;
+  fastForwardWidth = appwidth/52;
+  fastForwardHeight = appheight/31;
+  skipBackwardsX = appwidth/8.5;
+  skipBackwardsY = appheight/1.71;
+  skipBackwardsWidth = appwidth/52;
+  skipBackwardsHeight = appheight/31;
+  nextX = appwidth/4.8;
+  nextY = appheight/1.71;
+  nextWidth = appwidth/52;
+  nextHeight = appheight/31;
+  backX = appwidth/10.8;
+  backY = appheight/1.71;
+  backWidth = appwidth/52;
+  backHeight = appheight/31;
   titlefont = createFont("Times New Roman", 60);
   //
   rect(drawingsurfaceX, drawingsurfaceY, drawingsurfaceWidth, drawingsurfaceHeight);
@@ -189,10 +282,12 @@ void draw() {
     stroke(Variable);
     fill(Variable);
     if (drawLine == true) {
+      strokeWeight(drawSize);
       line(mouseX, mouseY, pmouseX, pmouseY); //line draw
+      strokeWeight(1);
     } else {
       if (drawSquare == true) {
-        rect(mouseX, mouseY, drawSize, drawSize);
+        rect(mouseX*1, mouseY*1, drawSize, drawSize);
       } else {
         if (drawCircle == true) {
           ellipse(mouseX, mouseY, drawSize, drawSize);
@@ -262,6 +357,21 @@ void draw() {
   } else {
     downTint = reset;
   }//end hoverover
+  if (mouseX>radioX && mouseX<radioX+radioWidth && mouseY>radioY && mouseY<radioY+radioHeight) {
+    radioTint = grey;
+  } else {
+    radioTint = reset;
+  }//end hoverover
+  if (mouseX>pauseX && mouseX<pauseX+pauseWidth && mouseY>pauseY && mouseY<pauseY+pauseHeight) {
+    pauseTint = grey;
+  } else {
+    pauseTint = reset;
+  }//end hoverover
+  if (mouseX>playX && mouseX<playX+playWidth && mouseY>playY && mouseY<playY+playHeight) {
+    playTint = grey;
+  } else {
+    playTint = reset;
+  }//end hoverover
   fill(selectorTint);
   rect(colorSelectorX, colorSelectorY, colorSelectorWidth, colorSelectorHeight);
   fill(black);
@@ -317,13 +427,32 @@ void draw() {
   fill(upTint);
   triangle(sizeUPXbridge, sizeUPYbridge, sizeUPXleft, sizeUPYleft, sizeUPXright, sizeUPYright);
   fill(downTint);
-  println(downButtonX, downButtonY, downButtonWidth, downButtonHeight);
   triangle(sizeDOWNXbridge, sizeDOWNYbridge, sizeDOWNXleft, sizeDOWNYleft, sizeDOWNXright, sizeDOWNYright);
   fill(reset);
   //Music Player
+  fill(radioTint);
   rect(radioX, radioY, radioWidth, radioHeight);
+  fill(black);
+  textAlign(CENTER, CENTER );
+  textFont(titlefont, 15);
+  text("Radio",radioX, radioY, radioWidth, radioHeight);
+  fill(reset);
   rect(radioMenuX, radioMenuY, radioMenuWidth, radioMenuHeight);
-  //
+    //
+  noStroke();
+  fill(pauseTint);
+  rect(pauseX, pauseY, pauseWidth, pauseHeight);
+  fill(playTint);
+  rect(playX, playY, playWidth, playHeight);
+  fill(reset);
+  stroke(1);
+  image(pic,imageX, imageY, picHeightAdjusted, picWidthAdjusted);
+  image(pic2,imageX2, imageY2, picHeightAdjusted2, picWidthAdjusted2);
+  fill(black);
+  textAlign(CENTER, TOP);
+  textFont(titlefont, 30);
+  text("Now Playing:"+songVarData.title(),radioMenuX, radioMenuY, radioMenuWidth, radioMenuHeight);
+  fill(reset);
 }//end draw
 //
 void keyPressed() {
@@ -420,6 +549,108 @@ void mousePressed() {
       drawSize = drawSize - 1;
     }
   }
+  if (mouseX>pauseX && mouseX<pauseX+pauseWidth && mouseY>pauseY && mouseY<pauseY+pauseHeight) {
+    if ( mouseButton == LEFT) {
+      if(radioOn == true){
+      songVar.pause();
+      }
+    }
+  }
+  if (mouseX>playX && mouseX<playX+playWidth && mouseY>playY && mouseY<playY+playHeight) {
+    if ( mouseButton == LEFT) {
+     if(radioOn == true){
+      songVar.play();
+     }
+    }
+  }
+  if (mouseX>fastForwardX && mouseX<fastForwardX+fastForwardWidth && mouseY>fastForwardY && mouseY<fastForwardY+fastForwardHeight) {
+    if ( mouseButton == LEFT) {
+      if(radioOn == true){
+      songVar.skip(1000);
+      }
+    }
+  }
+  if (mouseX>skipBackwardsX && mouseX<skipBackwardsX+skipBackwardsWidth && mouseY>skipBackwardsY && mouseY<skipBackwardsY+skipBackwardsHeight) {
+    if ( mouseButton == LEFT) {
+       if(radioOn == true){
+      songVar.skip(-1000);
+       }
+    }
+  }
+  if (mouseX>nextX && mouseX<nextX+nextWidth && mouseY>nextY && mouseY<nextY+nextHeight) {
+    if ( mouseButton == LEFT) {
+       if(radioOn == true){
+      if (songNumber == 1) {
+        songVar.pause();
+        songVar.rewind();
+        songNumber = 2;
+        songVar = song2;
+        songVarData = songMetaData2;
+        songVar.play();
+      } else {
+      if (songNumber == 2) {
+        songVar.pause();
+        songVar.rewind();
+        songNumber = 3;
+        songVar = song3;
+        songVarData = songMetaData3;
+        songVar.play();
+        } else {
+          if (songNumber == 3) {
+          songVar.pause();
+          songVar.rewind();
+          songNumber = 1;
+          songVar = song1;
+          songVarData = songMetaData1;
+          songVar.play();
+          }
+         }
+        }
+      }
+    }
+  }
+  if (mouseX>backX && mouseX<backX+backWidth && mouseY>backY && mouseY<backY+backHeight) {
+    if ( mouseButton == LEFT) {
+      if(radioOn == true){
+      if (songNumber == 1) {
+        songVar.pause();
+        songVar.rewind();
+        songNumber = 3;
+        songVar = song3;
+        songVarData = songMetaData3;
+        songVar.play();
+      } else {
+      if (songNumber == 2) {
+        songVar.pause();
+        songVar.rewind();
+        songNumber = 1;
+        songVar = song1;
+        songVarData = songMetaData1;
+        songVar.play();
+        } else {
+          if (songNumber == 3) {
+          songVar.pause();
+          songVar.rewind();
+          songNumber = 2;
+          songVar = song2;
+          songVarData = songMetaData2;
+          songVar.play();
+          }
+          }
+        }
+      }
+    }
+  }
+  if (mouseX>radioX && mouseX<radioX+radioWidth && mouseY>radioY && mouseY<radioY+radioHeight) {
+    if ( mouseButton == LEFT) {
+      if (radioOn == false) {
+        radioOn = true;
+      } else {
+        radioOn = false;
+      }
+    }
+  }
+//
 }//end mousepressed
 void mouseReleased() {
   draw = false;
