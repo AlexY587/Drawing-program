@@ -171,8 +171,8 @@ void setup() {
   downButtonY = sizeDOWNYbridge/1.05;
   downButtonWidth = sizeUPXright/2.4;
   downButtonHeight = sizeUPYbridge/18; 
-  radioX = palletX;
-  radioY = appheight/4;
+  radioX = colorSelectorX;
+  radioY = appheight/1.8;
   radioWidth = appwidth/24;
   radioHeight = appheight/18;
   titlefont = createFont("Times New Roman", 60);
