@@ -8,7 +8,7 @@ import ddf.minim.ugens.*;
 //Global variables
 //Radio
 Minim minim;
-AudioPlayer song1, song2, song3, songVar;
+AudioPlayer song1, song2, song3, songVar, buttonEffect, songTest;
 AudioMetaData songMetaData1, songMetaData2, songMetaData3, songVarData;
 float radioX, radioY, radioWidth, radioHeight;
 float radioMenuX, radioMenuY, radioMenuWidth, radioMenuHeight;
@@ -107,6 +107,8 @@ void setup() {
   song1 = minim.loadFile("Audio/Glass - Anno Domini Beats.mp3");
   song2 = minim.loadFile("Audio/Coast - Anno Domini Beats.mp3");
   song3 = minim.loadFile("Audio/Pray - Anno Domini Beats.mp3");
+  songTest = minim.loadFile("Audio/Pray - Anno Domini Beats.mp3");
+  buttonEffect = minim.loadFile("Audio/Camping-flashlight-switch-button.mp3");
   songMetaData1 = song1.getMetaData();
   songMetaData2 = song2.getMetaData();
   songMetaData3 = song3.getMetaData(); 
@@ -295,6 +297,10 @@ void setup() {
   fabricY = appheight*1/20;
   fabricWidth = appwidth/20;
   fabricHeight = appheight/18;
+  upMenuX = appwidth/4;
+  upMenuY = appheight/-1.394;
+  upMenuWidth = appwidth*3/4;
+  upMenuHeight = appheight*4/5;
   titlefont = createFont("Times New Roman", 60);
   //
   rect(drawingsurfaceX, drawingsurfaceY, drawingsurfaceWidth, drawingsurfaceHeight);
@@ -317,7 +323,7 @@ void draw() {
   fill(black);
   textAlign(CENTER, CENTER );
   textFont(titlefont, 15);
-  text("Fabric Drawer", fabricX, fabricY, fabricWidth, fabricHeight);
+  text("Fabric Drawer", fabricX, fabricY, fabricWidth, fabricHeight);//i dident know what to call this option and it looked like i was drawing fabric when using it so thats what i called it.
   fill(grey);
   noStroke();
   rect(upMenuX, upMenuY, upMenuWidth, upMenuHeight);
@@ -337,16 +343,11 @@ void draw() {
         if (drawCircle == true) {
           ellipse(mouseX, mouseY, drawSize, drawSize);
         } else {
-          if (eraserActive == true) {
-            Variable = reset;
-            ellipse(mouseX, mouseY, drawSize, drawSize);
-          } else {
             if (coolThing == true) {
               line(mouseX, mouseY, 0, 0);
             }
           }
         }
-      }
     }
     //line(mouseX, mouseY, 0, 0); //cooler line draw put in Cool stuff later
     fill(reset);
@@ -617,28 +618,40 @@ void mousePressed() {
   if (mouseX>colorchangeRedX && mouseX<colorchangeRedX+colorchangeRedWidth && mouseY>colorchangeRedY && mouseY<colorchangeRedY+colorchangeRedHeight) {
     if ( mouseButton == LEFT) {
       if (colorSelecting == true) {
+        eraserActive = false;
         Variable = red;
+        buttonEffect.rewind();
+        buttonEffect.play();
       }
     }
   }
   if (mouseX>colorchangeBlueX && mouseX<colorchangeBlueX+colorchangeBlueWidth && mouseY>colorchangeBlueY && mouseY<colorchangeBlueY+colorchangeBlueHeight) {
     if ( mouseButton == LEFT) {
       if (colorSelecting == true) {
+        eraserActive = false;
         Variable = blue;
+        buttonEffect.rewind();
+        buttonEffect.play();
       }
     }
   }
   if (mouseX>colorchangeGreenX && mouseX<colorchangeGreenX+colorchangeGreenWidth && mouseY>colorchangeGreenY && mouseY<colorchangeGreenY+colorchangeGreenHeight) {
     if ( mouseButton == LEFT) {
       if (colorSelecting == true) {
+        eraserActive = false;
         Variable = green;
+        buttonEffect.rewind();
+        buttonEffect.play();
       }
     }
   }
   if (mouseX>colorchangeBlackX && mouseX<colorchangeBlackX+colorchangeBlackWidth && mouseY>colorchangeBlackY && mouseY<colorchangeBlackY+colorchangeBlackHeight) {
     if ( mouseButton == LEFT) {
       if (colorSelecting == true) {
+        eraserActive = false;
         Variable = black;
+        buttonEffect.rewind();
+        buttonEffect.play();
       }
     }
   }
@@ -646,8 +659,12 @@ void mousePressed() {
     if ( mouseButton == LEFT) {
       if (colorSelecting == false) {
         colorSelecting = true;
+        buttonEffect.rewind();
+        buttonEffect.play();
       } else {
         colorSelecting = false;
+        buttonEffect.rewind();
+        buttonEffect.play();
       }
     }
   }
@@ -655,8 +672,12 @@ void mousePressed() {
     if ( mouseButton == LEFT) {
       if (shapeSelecting == false) {
         shapeSelecting = true;
+        buttonEffect.rewind();
+        buttonEffect.play();
       } else {
         shapeSelecting = false;
+        buttonEffect.rewind();
+        buttonEffect.play();
       }
     }
   }
@@ -668,6 +689,8 @@ void mousePressed() {
         drawCircle = false;
         coolThing = false;
         eraserActive = false;
+        buttonEffect.rewind();
+        buttonEffect.play();
       }
     }
   }
@@ -679,6 +702,8 @@ void mousePressed() {
         drawLine = false;
         coolThing = false;
         eraserActive = false;
+        buttonEffect.rewind();
+        buttonEffect.play();
       }
     }
   }
@@ -690,23 +715,31 @@ void mousePressed() {
         drawSquare = false;
         coolThing = false;
         eraserActive = false;
+        buttonEffect.rewind();
+        buttonEffect.play();
       }
     }
   }
   if (mouseX>upButtonX && mouseX<upButtonX+upButtonWidth && mouseY>upButtonY && mouseY<upButtonY+upButtonHeight) {
     if ( mouseButton == LEFT) {
       drawSize = drawSize + 1;
+      buttonEffect.rewind();
+      buttonEffect.play();
     }
   }
   if (mouseX>downButtonX && mouseX<downButtonX+downButtonWidth && mouseY>downButtonY && mouseY<downButtonY+downButtonHeight) {
     if ( mouseButton == LEFT) {
       drawSize = drawSize - 1;
+      buttonEffect.rewind();
+      buttonEffect.play();
     }
   }
   if (mouseX>pauseX && mouseX<pauseX+pauseWidth && mouseY>pauseY && mouseY<pauseY+pauseHeight) {
     if ( mouseButton == LEFT) {
       if (radioOn == true) {
         songVar.pause();
+        buttonEffect.rewind();
+        buttonEffect.play();
       }
     }
   }
@@ -714,6 +747,8 @@ void mousePressed() {
     if ( mouseButton == LEFT) {
       if (radioOn == true) {
         songVar.play();
+        buttonEffect.rewind();
+        buttonEffect.play();
       }
     }
   }
@@ -721,6 +756,8 @@ void mousePressed() {
     if ( mouseButton == LEFT) {
       if (radioOn == true) {
         songVar.skip(1000);
+        buttonEffect.rewind();
+        buttonEffect.play();
       }
     }
   }
@@ -728,6 +765,8 @@ void mousePressed() {
     if ( mouseButton == LEFT) {
       if (radioOn == true) {
         songVar.skip(-1000);
+        buttonEffect.rewind();
+        buttonEffect.play();
       }
     }
   }
@@ -741,6 +780,8 @@ void mousePressed() {
           songVar = song2;
           songVarData = songMetaData2;
           songVar.play();
+          buttonEffect.rewind();
+          buttonEffect.play();
         } else {
           if (songNumber == 2) {
             songVar.pause();
@@ -749,6 +790,8 @@ void mousePressed() {
             songVar = song3;
             songVarData = songMetaData3;
             songVar.play();
+            buttonEffect.rewind();
+            buttonEffect.play();
           } else {
             if (songNumber == 3) {
               songVar.pause();
@@ -757,6 +800,8 @@ void mousePressed() {
               songVar = song1;
               songVarData = songMetaData1;
               songVar.play();
+              buttonEffect.rewind();
+              buttonEffect.play();
             }
           }
         }
@@ -773,6 +818,8 @@ void mousePressed() {
           songVar = song3;
           songVarData = songMetaData3;
           songVar.loop(0);
+          buttonEffect.rewind();
+          buttonEffect.play();
         } else {
           if (songNumber == 2) {
             songVar.pause();
@@ -782,6 +829,8 @@ void mousePressed() {
             songVarData = songMetaData1;
             songVar.play();
             songVar.loop(0);
+            buttonEffect.rewind();
+            buttonEffect.play();
           } else {
             if (songNumber == 3) {
               songVar.pause();
@@ -791,6 +840,8 @@ void mousePressed() {
               songVarData = songMetaData2;
               songVar.play();
               songVar.loop(0);
+              buttonEffect.rewind();
+              buttonEffect.play();
             }
           }
         }
@@ -801,38 +852,44 @@ void mousePressed() {
     if ( mouseButton == LEFT) {
       if (radioOn == false) {
         radioOn = true;
+        buttonEffect.rewind();
+        buttonEffect.play();
       } else {
         radioOn = false;
+        buttonEffect.rewind();
+        buttonEffect.play();
       }
     }
   }
   if (mouseX>loopX && mouseX<loopX+loopWidth && mouseY>loopY && mouseY<loopY+loopHeight) {
     if ( mouseButton == LEFT) {
       songVar.loop();
+      buttonEffect.rewind();
+      buttonEffect.play();
     }
   }
   if (mouseX>exitX && mouseX<exitX+exitWidth && mouseY>exitY && mouseY<exitY+exitHeight) {
     if ( mouseButton == LEFT) {
       exit();
+      buttonEffect.rewind();
+      buttonEffect.play();
     }
   }
   if (mouseX>eraserX && mouseX<eraserX+eraserWidth && mouseY>eraserY && mouseY<eraserY+eraserHeight) {
     if ( mouseButton == LEFT) {
-      if (eraserActive == false) {
         eraserActive = true;
-        drawLine = false;
-        drawCircle = false;
-        drawSquare = false;
         coolThing = false;
-      } else {
-        eraserActive = false;
+        Variable = reset;
+        buttonEffect.rewind();
+        buttonEffect.play();
       }
     }
-  }
   if (mouseX>clearX && mouseX<clearX+clearWidth && mouseY>clearY && mouseY<clearY+clearHeight) {
     if ( mouseButton == LEFT) {
       if (shapeSelecting == false) {
         rect(drawingsurfaceX, drawingsurfaceY, drawingsurfaceWidth, drawingsurfaceHeight);
+        buttonEffect.rewind();
+        buttonEffect.play();
       }
     }
   }
@@ -845,8 +902,12 @@ void mousePressed() {
           drawCircle = false;
           drawSquare = false;
           eraserActive = false;
+          buttonEffect.rewind();
+          buttonEffect.play();
         } else {
           coolThing = false;
+          buttonEffect.rewind();
+          buttonEffect.play();
         }
       }
     }
