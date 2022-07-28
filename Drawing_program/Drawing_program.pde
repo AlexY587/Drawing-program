@@ -688,6 +688,7 @@ void mousePressed() {
         drawLine = false;
         drawCircle = false;
         coolThing = false;
+        Variable = black;
         eraserActive = false;
         buttonEffect.rewind();
         buttonEffect.play();
@@ -701,6 +702,7 @@ void mousePressed() {
         drawSquare = false;
         drawLine = false;
         coolThing = false;
+        Variable = black;
         eraserActive = false;
         buttonEffect.rewind();
         buttonEffect.play();
@@ -714,6 +716,7 @@ void mousePressed() {
         drawCircle = false;
         drawSquare = false;
         coolThing = false;
+        Variable = black;
         eraserActive = false;
         buttonEffect.rewind();
         buttonEffect.play();
